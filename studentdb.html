@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Information Management</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f4f4f4;
+    padding:30px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:20px;
+    color:#333;
+}
+
+/* Form Styling */
+form{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+form input{
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+.buttons{
+    grid-column:span 2;
+    text-align:center;
+}
+
+button{
+    padding:10px 20px;
+    margin:5px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.add-btn{
+    background:#007BFF;
+    color:white;
+}
+
+.reset-btn{
+    background:#dc3545;
+    color:white;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+/* Table Styling */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:30px;
+}
+
+table th, table td{
+    border:1px solid #ccc;
+    padding:12px;
+    text-align:center;
+}
+
+table th{
+    background:#007BFF;
+    color:white;
+}
+
+.delete-btn{
+    background:#dc3545;
+    color:white;
+    padding:6px 12px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.delete-btn:hover{
+    opacity:0.8;
+}
+
+/* Responsive */
+@media(max-width:700px){
+    form{
+        grid-template-columns:1fr;
+    }
+
+    .buttons{
+        grid-column:span 1;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Student Information Management</h1>
+
+    <!-- Form -->
+    <form id="studentForm">
+
+        <input type="text" id="name" placeholder="Enter Name" required>
+
+        <input type="text" id="roll" placeholder="Enter Roll No" required>
+
+        <input type="text" id="course" placeholder="Enter Course" required>
+
+        <input type="email" id="email" placeholder="Enter Email" required>
+
+        <div class="buttons">
+            <button type="submit" class="add-btn">Add Student</button>
+            <button type="reset" class="reset-btn">Reset</button>
+        </div>
+
+    </form>
+
+    <!-- Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Roll No</th>
+                <th>Course</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="studentTable">
+        </tbody>
+    </table>
+
+</div>
+
+<script>
+
+// Form Submit
+document.getElementById("studentForm").addEventListener("submit", function(event){
+
+    event.preventDefault();
+
+    // Get Values
+    let name = document.getElementById("name").value.trim();
+    let roll = document.getElementById("roll").value.trim();
+    let course = document.getElementById("course").value.trim();
+    let email = document.getElementById("email").value.trim();
+
+    // Email Validation
+    let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+    if(name === "" || roll === "" || course === "" || email === ""){
+        alert("All fields are required!");
+        return;
+    }
+
+    if(!email.match(emailPattern)){
+        alert("Enter valid email address!");
+        return;
+    }
+
+    // Create Table Row
+    let table = document.getElementById("studentTable");
+
+    let row = table.insertRow();
+
+    row.insertCell(0).innerHTML = name;
+    row.insertCell(1).innerHTML = roll;
+    row.insertCell(2).innerHTML = course;
+    row.insertCell(3).innerHTML = email;
+
+    // Delete Button
+    let deleteCell = row.insertCell(4);
+
+    deleteCell.innerHTML =
+    `<button class="delete-btn" onclick="deleteRow(this)">Delete</button>`;
+
+    // Reset Form
+    document.getElementById("studentForm").reset();
+});
+
+// Delete Function
+function deleteRow(button){
+    let row = button.parentNode.parentNode;
+    row.parentNode.removeChild(row);
+}
+
+</script>
+
+</body>
+</html>
